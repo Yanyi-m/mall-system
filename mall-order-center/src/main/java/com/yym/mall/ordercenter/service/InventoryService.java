@@ -16,9 +16,8 @@ public interface InventoryService {
     /**
      * 库存扣减
      * @param productId 产品id
-     * @param orderNo 订单号
      * @return
      */
     @RequestMapping("/deduct")
-    MyHttpResponse inventoryDeduct(@RequestParam("productId") Long productId, @RequestParam("orderNo") String orderNo);
+    MyHttpResponse inventoryDeduct(@RequestParam("productId") Long productId);
 }

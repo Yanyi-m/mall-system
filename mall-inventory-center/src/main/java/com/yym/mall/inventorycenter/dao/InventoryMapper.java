@@ -19,6 +19,7 @@ public interface InventoryMapper extends BaseMapper<ProductDto> {
      * 扣减库存
      * @param productId 产品id
      * @param updateTime 更新时间
+     * @return
      */
     boolean deduct(@Param("productId") Long productId, @Param("updateTime") Date updateTime);
 

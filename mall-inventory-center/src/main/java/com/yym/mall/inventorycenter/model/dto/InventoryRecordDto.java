@@ -3,7 +3,6 @@ package com.yym.mall.inventorycenter.model.dto;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.yym.mall.inventorycenter.enums.OptionTypeEnum;
 import lombok.Data;
 
 import java.util.Date;
@@ -39,10 +38,4 @@ public class InventoryRecordDto {
      * 更新时间
      */
     protected Date updateTime;
-
-    /**
-     * 操作类型，1 - 扣减，2 - 回滚
-     * @see OptionTypeEnum
-     */
-    protected Integer optionType;
 }

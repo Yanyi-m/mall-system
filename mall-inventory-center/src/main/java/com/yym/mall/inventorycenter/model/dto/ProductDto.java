@@ -31,6 +31,11 @@ public class ProductDto {
     protected Integer stock;
 
     /**
+     * 名称
+     */
+    protected String name;
+
+    /**
      * 创建时间
      */
     protected Date createTime;

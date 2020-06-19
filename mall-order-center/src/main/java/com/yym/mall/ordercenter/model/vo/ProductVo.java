@@ -22,4 +22,9 @@ public class ProductVo {
      * 价格
      */
     protected BigDecimal price;
+
+    /**
+     * 名称
+     */
+    protected String name;
 }

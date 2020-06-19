@@ -19,15 +19,10 @@ import java.util.Date;
 public class OrderDto {
 
     /**
-     * id
+     * 订单id
      */
     @TableId(value = "id", type = IdType.AUTO)
     protected Long id;
-
-    /**
-     * 订单号
-     */
-    protected String orderNo;
 
     /**
      * 产品id
@@ -35,9 +30,24 @@ public class OrderDto {
     protected Long productId;
 
     /**
+     * 产品价格
+     */
+    protected BigDecimal productPrice;
+
+    /**
+     * 产品名称
+     */
+    protected String productName;
+
+    /**
      * 用户id
      */
     protected Long userId;
+
+    /**
+     * 送货地址
+     */
+    protected String shipAddress;
 
     /**
      * 总金额

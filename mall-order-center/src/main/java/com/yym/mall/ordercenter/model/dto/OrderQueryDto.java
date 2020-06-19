@@ -13,7 +13,7 @@ public class OrderQueryDto extends PageParam {
     /**
      * 订单号
      */
-    protected String orderNo;
+    protected Long orderId;
 
     /**
      * 产品id

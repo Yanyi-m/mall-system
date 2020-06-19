@@ -4,9 +4,12 @@ import com.yym.mall.common.comm.MyHttpResponse;
 import com.yym.mall.ordercenter.exception.OrderException;
 import com.yym.mall.ordercenter.model.dto.OrderDto;
 import com.yym.mall.ordercenter.model.dto.OrderQueryDto;
-import com.yym.mall.ordercenter.service.OrderService;
+import com.yym.mall.ordercenter.service.impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 订单控制层
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     @Autowired
-    OrderService orderService;
+    OrderServiceImpl orderService;
 
     @GetMapping("/queryOrders")
     public MyHttpResponse queryOrders(OrderQueryDto orderQueryDto){

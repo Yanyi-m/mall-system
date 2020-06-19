@@ -16,12 +16,32 @@ public class OrderVo {
     /**
      * 订单号
      */
-    protected String orderNo;
+    protected Long orderId;
 
     /**
      * 产品id
      */
     protected Long productId;
+
+    /**
+     * 产品价格
+     */
+    protected BigDecimal productPrice;
+
+    /**
+     * 产品名称
+     */
+    protected String productName;
+
+    /**
+     * 用户id
+     */
+    protected Long userId;
+
+    /**
+     * 送货地址
+     */
+    protected String shipAddress;
 
     /**
      * 总金额
@@ -33,6 +53,10 @@ public class OrderVo {
      */
     protected Date createTime;
 
+    /**
+     * 更新时间
+     */
+    protected Date updateTime;
 
     /**
      * 订单状态

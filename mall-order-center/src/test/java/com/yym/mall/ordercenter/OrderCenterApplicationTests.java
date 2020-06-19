@@ -6,10 +6,17 @@ import com.yym.mall.ordercenter.enums.OrderStatusEnum;
 import com.yym.mall.ordercenter.exception.OrderException;
 import com.yym.mall.ordercenter.model.dto.OrderDto;
 import com.yym.mall.ordercenter.model.dto.OrderQueryDto;
+import com.yym.mall.ordercenter.model.dto.UserDto;
+import com.yym.mall.ordercenter.model.vo.OrderVo;
+import com.yym.mall.ordercenter.pagination.PageDto;
+import com.yym.mall.ordercenter.service.impl.OrderServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.math.BigDecimal;
 
 @SpringBootTest
 @Slf4j
@@ -18,77 +25,79 @@ class OrderCenterApplicationTests {
     @Autowired
     OrderController orderController;
 
+    @Autowired
+    OrderServiceImpl orderService;
+
+    public UserDto user1 = UserDto.builder().id(1L).shipAddress("长沙岳麓区").build();
+    public UserDto user2 = UserDto.builder().id(2L).shipAddress("长沙开福区").build();
+
+
     /**
-     * 订单查询测试
+     * 测试获取用户订单列表
+     * 参数用户id = 1
      */
     @Test
-    void queryOrders(){
-        OrderQueryDto orderDto1 = new OrderQueryDto();
+    void testQueryOrderByUser(){
+        OrderQueryDto orderDto = new OrderQueryDto();
+        orderDto.setUserId(user1.getId());
 
-        orderDto1.setUserId(1L);
-        MyHttpResponse myHttpResponse = orderController.queryOrders(orderDto1);
-        log.info("用户id查询结果：{}",myHttpResponse.getDetails());
-
-        OrderQueryDto orderDto2 = new OrderQueryDto();
-        orderDto2.setUserId(1L);
-        orderDto2.setOrderNo("1000_202006190927240001");
-        myHttpResponse = orderController.queryOrders(orderDto2);
-        log.info("用户id和订单号查询结果：{}",myHttpResponse.getDetails());
-
-        OrderQueryDto orderDto3 = new OrderQueryDto();
-        orderDto3.setUserId(2L);
-        orderDto3.setOrderStatus(OrderStatusEnum.PAYED.getIndex());
-        myHttpResponse = orderController.queryOrders(orderDto3);
-        log.info("用户id和订单状态查询结果：{}",myHttpResponse.getDetails());
+        PageDto<OrderVo> pageDto = orderService.queryOrders(orderDto);
+        // 期望用户id = 1 ，订单列表大小为3
+        Assert.assertNotNull(pageDto.getData());
+        Assert.assertEquals(3,pageDto.getData().size());
     }
 
     /**
-     * 订单创建测试
+     * 测试根据订单id获取用户订单列表
+     * 参数用户id = 2, orderId = 1
      */
     @Test
-    void createOrders(){
-        // 参数测试
-        OrderDto orderDto1 = new OrderDto();
-        orderDto1.setUserId(1L);
-        MyHttpResponse myHttpResponse = null;
+    void testQueryOrderByOrderId(){
+        OrderQueryDto orderDto = new OrderQueryDto();
+        orderDto.setUserId(user1.getId());
+        orderDto.setOrderId(1L);
+
+        PageDto<OrderVo> pageDto = orderService.queryOrders(orderDto);
+        // 期望用户id = 1 , orderId = 1 , 订单列表大小为1
+        Assert.assertNotNull(pageDto.getData());
+        Assert.assertEquals(1,pageDto.getData().size());
+    }
+
+    /**
+     * 测试无产品id创建订单
+     */
+    @Test
+    void testCreateOrderWithOutProductId() {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setUserId(user1.getId());
+        OrderDto orderDto1 = null;
         try {
-            myHttpResponse = orderController.createOrders(orderDto1);
+            orderDto1 = orderService.createOrder(orderDto);
         } catch (OrderException e) {
-            log.info("出现异常！",e);
+            Assert.assertEquals(200001,e.getCode().intValue());
         }
 
-        // 参数测试
-        OrderDto orderDto2 = new OrderDto();
-        orderDto2.setProductId(1L);
-        try {
-            myHttpResponse = orderController.createOrders(orderDto2);
-        } catch (OrderException e) {
-            log.info("出现异常！",e);
-        }
+        Assert.assertNull(orderDto1);
+    }
 
-        // 无商品测试
-        OrderDto orderDto3 = new OrderDto();
-        orderDto3.setUserId(1L);
-        orderDto3.setProductId(3L);
-        try {
-            myHttpResponse = orderController.createOrders(orderDto3);
-        } catch (OrderException e) {
-            log.info("出现异常！",e);
-        }
+    /**
+     * 测试创建订单
+     */
+    @Test
+    void testCreateOrder() {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setUserId(user2.getId());
+        orderDto.setShipAddress(user2.getShipAddress());
+        orderDto.setProductId(1L);
 
-        // 正常测试
-        OrderDto orderDto4 = new OrderDto();
-        orderDto4.setUserId(1L);
-        orderDto4.setProductId(1L);
         try {
-            myHttpResponse = orderController.createOrders(orderDto4);
+            orderDto = orderService.createOrder(orderDto);
         } catch (OrderException e) {
-            log.info("出现异常！",e);
+            e.printStackTrace();
         }
-
-        if(myHttpResponse.getCode().equals(0)) {
-            log.info("创建订单测试成功");
-        }
+        // 期望捕捉到参数非法的异常
+        Assert.assertEquals("产品1",orderDto.getProductName());
+        Assert.assertEquals("长沙开福区",orderDto.getShipAddress());
     }
 
 }
