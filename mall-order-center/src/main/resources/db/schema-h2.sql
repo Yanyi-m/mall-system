@@ -1,0 +1,14 @@
+DROP TABLE IF EXISTS mall_order;
+
+CREATE TABLE mall_order
+(
+	id BIGINT(20) NOT NULL auto_increment COMMENT '主键ID',
+	order_no VARCHAR(30) NOT NULL DEFAULT NULL COMMENT '订单号',
+	user_id BIGINT(20) NOT NULL DEFAULT NULL COMMENT '用户id',
+    product_id BIGINT(20) NOT NULL DEFAULT NULL COMMENT '产品id',
+    total_amount DECIMAL(11,2) NOT NULL DEFAULT NULL COMMENT '总金额',
+    create_time DATETIME NOT NULL DEFAULT NULL COMMENT '创建时间',
+    update_time DATETIME NOT NULL DEFAULT NULL COMMENT '更新时间',
+    order_status INT(11) NOT NULL DEFAULT NULL COMMENT '订单状态',
+	PRIMARY KEY (id)
+);

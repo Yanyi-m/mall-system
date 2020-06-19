@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yym.mall.inventorycenter.dao.InventoryMapper">
+    <resultMap id="BaseResultMap" type="com.yym.mall.inventorycenter.model.dto.ProductDto">
+        <result column="id" jdbcType="BIGINT" property="id" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="stock" jdbcType="INTEGER" property="stock" />
+    </resultMap>
+
+    <update id="deduct">
+        update mall_inventory set stock = stock - 1, update_time = #{updateTime} where id = #{productId} and stock >0
+   </update>
+
+    <select id="queryProduct" resultMap="BaseResultMap">
+        select
+        id,
+        price,
+        stock
+        from mall_inventory
+        where id = #{productId}
+    </select>
+
+</mapper>
